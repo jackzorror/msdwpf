@@ -57,6 +57,6 @@ namespace msdWPF.Model
             }
 
             return _sqLiteConnection;
-        }    
+        }
     }
 }

@@ -93,12 +93,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\ClassModel.cs" />
     <Compile Include="Model\MSDModel.cs" />
     <Compile Include="Model\MSDModelUtil.cs" />
     <Compile Include="Model\MSDStudent.cs" />
     <Compile Include="Model\MSDStudentMedical.cs" />
     <Compile Include="Model\MSDStudentParent.cs" />
+    <Compile Include="Model\SchoolSemester.cs" />
     <Compile Include="Model\StudentModel.cs" />
+    <Compile Include="ViewModel\ClassViewModel.cs" />
     <Compile Include="ViewModel\StudentInformationViewModel.cs" />
     <Compile Include="ViewModel\StudentViewModel.cs" />
     <Compile Include="View\ClassUC.xaml.cs">

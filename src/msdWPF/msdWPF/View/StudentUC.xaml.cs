@@ -53,5 +53,10 @@ namespace msdWPF.View
                 _viewModel.SearchStudentByFirstLastName();
             }
         }
+
+        private void StudnetAdd_onClick(object sender, RoutedEventArgs e)
+        {
+            _viewModel.AddNewStudent();
+        }
     }
 }

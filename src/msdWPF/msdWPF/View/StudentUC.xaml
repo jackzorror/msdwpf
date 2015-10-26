@@ -21,10 +21,11 @@
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="120" />
                 <ColumnDefinition Width="80" />
-                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="120" />
                 <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="90" />
                 <ColumnDefinition Width="90" />
                 <ColumnDefinition Width="90" />
             </Grid.ColumnDefinitions>
@@ -38,6 +39,7 @@
                                      Text="{Binding Path=SearchLastName, Mode=TwoWay}" KeyUp="StudentLastNameSearch_OnKeyUp"/>
             <Button Grid.Column="5" Height="25" Width="80" HorizontalAlignment="Right" Content="Search" Click="StudentSearch_onClick"/>
             <Button Grid.Column="6" Height="25" Width="80" HorizontalAlignment="Right" Content="Cancel" Click="StudnetCancel_onClick"/>
+            <Button Grid.Column="7" Height="25" Width="80" HorizontalAlignment="Right" Content="Add" Click="StudnetAdd_onClick"/>
 
         </Grid>
         <TabControl Grid.Row="2" TabStripPlacement="Left" Visibility="{Binding Path=ShowStudentTabControl}" >

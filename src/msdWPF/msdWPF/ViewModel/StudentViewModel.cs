@@ -12,9 +12,6 @@ namespace msdWPF.ViewModel
 {
     public class StudentViewModel : INotifyPropertyChanged
     {
-
-        private StudentModel _studentModel;
-
         #region INotifyPropertyChanged Members
 
         /// <summary>
@@ -28,6 +25,8 @@ namespace msdWPF.ViewModel
                 PropertyChanged(this, new PropertyChangedEventArgs(property));
         }
         #endregion
+
+        private StudentModel _studentModel;
 
         #region StudentUC
 
@@ -58,6 +57,20 @@ namespace msdWPF.ViewModel
             }
         }
         private List<String> _lastNameList;
+
+        public List<SchoolSemester> SemesterListForStudent
+        {
+            get
+            {
+                if (null == _semesterList && null != _studentModel)
+                {
+                    _semesterList = _studentModel.FindAllSemesterList();
+                }
+                return _semesterList;
+            }
+        }
+
+        private List<SchoolSemester> _semesterList; 
 
         public String SearchLastName { get; set; }
 
@@ -110,6 +123,7 @@ namespace msdWPF.ViewModel
             ShowStudentTabControl = "Hidden";
             _lastNameList = _studentModel.FindAllStudentLastName();
             _firstNameList = _studentModel.FindAllStudentFirstName();
+            _semesterList = _studentModel.FindAllSemesterList();
             NotifyPropertyChanged("");
         }
 
@@ -193,6 +207,9 @@ namespace msdWPF.ViewModel
         public String StudentMedicalEditButtonLabel { get; set; }
         public bool CanClickStudentMedicalSave { get; set; }
 
+        public bool StudentFirstNameChanged { get; set; }
+        public bool StudentLastNameChanged { get; set; }
+
         public bool StudentIsMale { get; set; }
 
         public bool StudentIsFemale { get; set; }
@@ -218,6 +235,8 @@ namespace msdWPF.ViewModel
                 CanClickStudentInformationSave = false;
                 
             }
+            StudentFirstNameChanged = false;
+            StudentLastNameChanged = false;
             NotifyPropertyChanged("");
         }
 
@@ -237,18 +256,51 @@ namespace msdWPF.ViewModel
                 CanEditStudentMedical = false;
                 CanClickStudentMedicalSave = false;
             }
+            StudentSearchErrorMesage = "";
             NotifyPropertyChanged("");
         }
 
         internal void SaveStudentInformation()
         {
+            if (String.IsNullOrEmpty(CurrentMSDStudent.FirstName) ||
+                String.IsNullOrEmpty(CurrentMSDStudent.LastName))
+            {
+                StudentSearchErrorMesage = "Please provide student First name and Last name.";
+                NotifyPropertyChanged("");
+                return;
+            }
 
             if (StudentIsMale) CurrentMSDStudent.Gender = "M";
             if (StudentIsFemale) CurrentMSDStudent.Gender = "F";
 
-            _studentModel.SaveStudentInformation(CurrentMSDStudent);
+            if (CurrentMSDStudent.Id == 0)
+            {
+                MSDStudent _newStudent = _studentModel.AddStudentInformation(CurrentMSDStudent);
+                CurrentMSDStudent = _newStudent;
+            }
+            else
+            {
+                _studentModel.SaveStudentInformation(CurrentMSDStudent);
+            }
+
+            if (ParentOne.Id == 0)
+                ParentOne.MSDStudentId = CurrentMSDStudent.Id;
             _studentModel.SaveStudentParent(ParentOne);
+
+            if (ParentTwo.Id == 0)
+                ParentTwo.MSDStudentId = CurrentMSDStudent.Id;
             _studentModel.SaveStudentParent(ParentTwo);
+
+            if (StudentFirstNameChanged || StudentLastNameChanged)
+            {
+                _firstNameList = _studentModel.FindAllStudentFirstName();
+                _lastNameList = _studentModel.FindAllStudentLastName();
+                SearchFirstName = CurrentMSDStudent.FirstName;
+                SearchLastName = CurrentMSDStudent.LastName;
+            }
+
+            StudentFirstNameChanged = false;
+            StudentLastNameChanged = false;
 
             StudentInformationEditButtonLabel = "Edit";
             CanEditStudentInformation = false;
@@ -259,6 +311,9 @@ namespace msdWPF.ViewModel
 
         internal void SaveStudentMedical()
         {
+            if (CurrentStudentMedical.Id == 0)
+                CurrentStudentMedical.MSDStudentId = CurrentMSDStudent.Id;
+
             _studentModel.SaveStudentMedical(CurrentStudentMedical);
 
             StudentMedicalEditButtonLabel = "Edit";
@@ -266,7 +321,6 @@ namespace msdWPF.ViewModel
             CanClickStudentMedicalSave = false;
             NotifyPropertyChanged("");
         }
-
 
         internal void SetCurrentStudent(MSDStudent student)
         {
@@ -290,11 +344,34 @@ namespace msdWPF.ViewModel
             CanEditStudentMedical = false;
             CanClickStudentMedicalSave = false;
 
-            NotifyPropertyChanged("StudentInformationEditButtonLabel");
+            NotifyPropertyChanged("");
+        }
+
+        internal void AddNewStudent()
+        {
+            CurrentMSDStudent = new MSDStudent();
+
+            ShowStudentTabControl = "Visible";
+            StudentSearchErrorMesage = "";
+            SearchFirstName = "";
+            SearchLastName = "";
+
+            StudentInformationEditButtonLabel = "Cancel";
+            CanEditStudentInformation = true;
+            CanClickStudentInformationSave = true;
+
+            StudentMedicalEditButtonLabel = "Cancel";
+            CanEditStudentMedical = true;
+            CanClickStudentMedicalSave = true;
+
+            _msdStudentMedical = new MSDStudentMedical();
+            _msdStudentParents = new List<MSDStudentParent>();
+            _msdStudentParents.Add(new MSDStudentParent());
+            _msdStudentParents.Add(new MSDStudentParent());
+            NotifyPropertyChanged("");
         }
 
         #endregion
-
 
     }
 }

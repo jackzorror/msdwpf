@@ -54,5 +54,15 @@ namespace msdWPF.View
             _viewModel.SaveStudentMedical();
         }
 
+        private void StudentLastName_onChanged(object sender, TextChangedEventArgs e)
+        {
+            _viewModel.StudentLastNameChanged = true;
+        }
+
+        private void StudentFirstName_onChanged(object sender, TextChangedEventArgs e)
+        {
+            _viewModel.StudentFirstNameChanged = true;
+        }
+
     }
 }

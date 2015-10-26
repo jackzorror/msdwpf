@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using msdWPF.Model;
+using msdWPF.ViewModel;
 
 namespace msdWPF.View
 {
@@ -20,14 +22,18 @@ namespace msdWPF.View
     /// </summary>
     public partial class ClassUC : UserControl
     {
+        private ClassViewModel _viewModel;
+
         public ClassUC()
         {
             InitializeComponent();
+
+            if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+            {
+                _viewModel = FindResource("classViewModel") as ClassViewModel;
+                _viewModel.SetClassModel(new ClassModel());
+            }
         }
 
-        internal void setParentViewModel(ViewModel.MainWindowViewModel _viewModel)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -11,6 +11,8 @@ namespace msdWPF.Model
 {
     public class StudentModel
     {
+        private MSDModel _MSDModel = new MSDModel();
+
         private MySqlConnection conn
         {
             get
@@ -116,32 +118,31 @@ namespace msdWPF.Model
 
         internal List<MSDStudentParent> FindStudentParentsByStudentId(int sid)
         {
-            String query = "SELECT * WHERE msd_student_id = " + sid + ";";
+            String query = "SELECT * FROM student_parent WHERE student_id = " + sid + ";";
             try
             {
-                MySqlCommand command = new MySqlCommand(query, conn);
-                MySqlDataReader reader = command.ExecuteReader();
-                DataTable table = new DataTable();
-                table.Load(reader);
-                if (table.Rows.Count > 0)
+                SQLiteCommand command = new SQLiteCommand(query, lconn);
+                SQLiteDataReader reader = command.ExecuteReader();
+                List<MSDStudentParent> parents = new List<MSDStudentParent>();
+                parents.Add(new MSDStudentParent());
+                parents.Add(new MSDStudentParent());
+                int index = 0;
+                while (reader.Read())
                 {
-                    List<MSDStudentParent> parents = new List<MSDStudentParent>();
-                    foreach (DataRow row in table.Rows)
-                    {
-                        MSDStudentParent parent = new MSDStudentParent();
-                        parent.Id = System.DBNull.Value != row.ItemArray[0] ? (int)row.ItemArray[0] : 0;
-                        parent.LastName = System.DBNull.Value != row.ItemArray[1] ? (String)row.ItemArray[1] : null;
-                        parent.FirstName = System.DBNull.Value != row.ItemArray[2] ? (String)row.ItemArray[2] : null;
-                        parent.WorkPhone = System.DBNull.Value != row.ItemArray[3] ? (String)row.ItemArray[3] : null;
-                        parent.CellPhone = System.DBNull.Value != row.ItemArray[4] ? (String)row.ItemArray[4] : null;
-                        parent.EmailAddress = System.DBNull.Value != row.ItemArray[5] ? (String)row.ItemArray[5] : null;
-                        parent.Relationship = System.DBNull.Value != row.ItemArray[6] ? (String)row.ItemArray[6] : null;
-                        parent.MSDStudentId = System.DBNull.Value != row.ItemArray[7] ? (int)row.ItemArray[7] : 0;
-                        parents.Add(parent);
-                    }
-
-                    return parents;
+                    var parent = parents[index];
+                    parent.Id = System.DBNull.Value != reader["id"] ? Convert.ToInt32(reader["id"]) : 0;
+                    parent.LastName = System.DBNull.Value != reader["last_name"] ? (String)reader["last_name"] : null;
+                    parent.FirstName = System.DBNull.Value != reader["first_name"] ? (String)reader["first_name"] : null;
+                    parent.WorkPhone = System.DBNull.Value != reader["work_phone"] ? (String)reader["work_phone"] : null;
+                    parent.CellPhone = System.DBNull.Value != reader["cell_phone"] ? (String)reader["cell_phone"] : null;
+                    parent.EmailAddress = System.DBNull.Value != reader["email_address"] ? (String)reader["email_address"] : null;
+                    parent.Relationship = System.DBNull.Value != reader["relationship"] ? (String)reader["relationship"] : null;
+                    parent.MSDStudentId = System.DBNull.Value != reader["student_id"] ? Convert.ToInt32(reader["student_id"]) : sid;
+                    if (index == 1) break;
+                    index++;
                 }
+
+                return parents;
             }
             catch (Exception ex)
             {
@@ -152,54 +153,48 @@ namespace msdWPF.Model
 
         internal MSDStudentMedical FindStudentMedicalByStudentId(int sid)
         {
-            String query = "SELECT id, insurance_company, policy_number, phone, pediatrician_name, emergency_name, emergency_phone, emergency_phone_alt, msd_student_id FROM msd.msd_student_medical_info WHERE msd_student_id = " + sid + ";";
+            String query = "SELECT * FROM student_medical WHERE student_id = " + sid + ";";
+            MSDStudentMedical medical = new MSDStudentMedical();
             try
             {
-                MySqlCommand command = new MySqlCommand(query, conn);
-                MySqlDataReader reader = command.ExecuteReader();
-                DataTable table = new DataTable();
-                table.Load(reader);
-                if (table.Rows.Count == 1)
+                SQLiteCommand command = new SQLiteCommand(query, lconn);
+                SQLiteDataReader reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    MSDStudentMedical medical = new MSDStudentMedical();
-                    DataRow row = table.Rows[0];
-                    medical.Id = System.DBNull.Value != row.ItemArray[0] ? (int)row.ItemArray[0] : 0;
-                    medical.InsuranceCompany = System.DBNull.Value != row.ItemArray[1] ? (String)row.ItemArray[1] : null;
-                    medical.PolicyNumber = System.DBNull.Value != row.ItemArray[2] ? (String)row.ItemArray[2] : null;
-                    medical.Phone = System.DBNull.Value != row.ItemArray[3] ? (String)row.ItemArray[3] : null;
-                    medical.PediatricianName = System.DBNull.Value != row.ItemArray[4] ? (String)row.ItemArray[4] : null;
-                    medical.EmergencyName = System.DBNull.Value != row.ItemArray[5] ? (String)row.ItemArray[5] : null;
-                    medical.EmergencyPhone = System.DBNull.Value != row.ItemArray[6] ? (String)row.ItemArray[6] : null;
-                    medical.EmergencyPhoneAlt = System.DBNull.Value != row.ItemArray[7] ? (String)row.ItemArray[7] : null;
-                    medical.MSDStudentId = System.DBNull.Value != row.ItemArray[8] ? (int)row.ItemArray[8] : 0;
-
-                    return medical;
+                    medical.Id = System.DBNull.Value != reader["id"] ? Convert.ToInt32(reader["id"]) : 0;
+                    medical.InsuranceCompany = System.DBNull.Value != reader["insurance_company"] ? (String)reader["insurance_company"] : null;
+                    medical.PolicyNumber = System.DBNull.Value != reader["policy_number"] ? (String)reader["policy_number"] : null;
+                    medical.Phone = System.DBNull.Value != reader["phone"] ? (String)reader["phone"] : null;
+                    medical.PediatricianName = System.DBNull.Value != reader["pediatrician_name"] ? (String)reader["pediatrician_name"] : null;
+                    medical.EmergencyName = System.DBNull.Value != reader["emergency_name"] ? (String)reader["emergency_name"] : null;
+                    medical.EmergencyPhone = System.DBNull.Value != reader["emergency_phone"] ? (String)reader["emergency_phone"] : null;
+                    medical.EmergencyPhoneAlt = System.DBNull.Value != reader["emergency_phone_alt"] ? (String)reader["emergency_phone_alt"] : null;
+                    medical.MSDStudentId = System.DBNull.Value != reader["student_id"] ? Convert.ToInt32(reader["student_id"]) : sid;
+                    break;
                 }
             }
             catch (Exception ex)
             {
-                ;
+                Console.WriteLine(ex.Message);
             }
-            return null;
+            return medical;
         }
 
         internal void SaveStudentInformation(MSDStudent student)
         {
-            String query = " UPDATE msd.msd_student  SET " +
+            String query = " UPDATE student  SET " +
                            " last_name = '" + student.LastName + "'" +
                            ", first_name = '" + student.FirstName + "'" +
                            ", gender = '" + student.Gender + "'" +
-                           ", dob = '" + ((DateTime)student.Dob).ToString("yyyy-MM-dd HH:mm:ss") + "'" +
+                           ", dob = " + (student.Dob != null ? "'" + ((DateTime)student.Dob).ToString("yyyy-MM-dd HH:mm:ss") + "'": "null") +
                            ", home_phone = '" + student.HomePhone + "'" +
                            ", cell_phone = '" + student.CellPhone + "'" +
                            ", email_address = '" + student.EmailAddress + "'" +
-                           ", school_name = '" + student.SchoolName + "'" +
-                           ", school_grade = '" + student.SchoolGrade + "'" +
                            ", home_address = '" + student.HomeAddress + "'" + 
                            " WHERE id = " + student.Id;
             try
             {
-                MySqlCommand command = new MySqlCommand(query,conn);
+                SQLiteCommand command = new SQLiteCommand(query, lconn);
                 command.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -208,19 +203,60 @@ namespace msdWPF.Model
             }
         }
 
-        internal void SaveStudentParent(MSDStudentParent parent)
+        internal MSDStudent AddStudentInformation(MSDStudent student)
         {
-            String query = " UPDATE msd.msd_student_parent  SET " +
-                           " last_name = '" + parent.LastName + "'" +
-                           ", first_name = '" + parent.FirstName + "'" +
-                           ", work_phone = '" + parent.WorkPhone + "'" +
-                           ", cell_phone = '" + parent.CellPhone + "'" +
-                           ", email_address = '" + parent.EmailAddress + "'" +
-                           ", relationship = '" + parent.Relationship + "'" +
-                           " WHERE id = " + parent.Id;
+            String query = " INSERT INTO student (last_name, first_name, gender, dob, home_phone, cell_phone, email_address, home_address) VALUES (" +
+                           " '" + student.LastName + "'" +
+                           ",  '" + student.FirstName + "'" +
+                           ",  '" + student.Gender + "'" +
+                           ", " + (student.Dob != null ? "'" + ((DateTime)student.Dob).ToString("yyyy-MM-dd HH:mm:ss") + "'" : "null") +
+                           ", '" + student.HomePhone + "'" +
+                           ", '" + student.CellPhone + "'" +
+                           ", '" + student.EmailAddress + "'" +
+                           ", '" + student.HomeAddress + "'" +
+                           "); ";
             try
             {
-                MySqlCommand command = new MySqlCommand(query, conn);
+                SQLiteCommand command = new SQLiteCommand(query, lconn);
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return FindStudentByFirstNameLastName(student.FirstName, student.LastName);
+        }
+
+        internal void SaveStudentParent(MSDStudentParent parent)
+        {
+            String query = "";
+            if (parent.Id != 0)
+            {
+                query = " UPDATE student_parent  SET " +
+                               " last_name = '" + parent.LastName + "'" +
+                               ", first_name = '" + parent.FirstName + "'" +
+                               ", work_phone = '" + parent.WorkPhone + "'" +
+                               ", cell_phone = '" + parent.CellPhone + "'" +
+                               ", email_address = '" + parent.EmailAddress + "'" +
+                               ", relationship = '" + parent.Relationship + "'" +
+                               " WHERE id = " + parent.Id;
+            }
+            else
+            {
+                query = " INSERT INTO student_parent (last_name, first_name, work_phone, cell_phone, email_address, relationship, student_id ) VALUES (" +
+                               "  '" + parent.LastName + "'" +
+                               ", '" + parent.FirstName + "'" +
+                               ", '" + parent.WorkPhone + "'" +
+                               ", '" + parent.CellPhone + "'" +
+                               ", '" + parent.EmailAddress + "'" +
+                               ", '" + parent.Relationship + "'" +
+                               ", " + parent.MSDStudentId +
+                               "); ";
+            }
+            try
+            {
+                SQLiteCommand command = new SQLiteCommand(query, lconn);
                 command.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -231,18 +267,36 @@ namespace msdWPF.Model
 
         internal void SaveStudentMedical(MSDStudentMedical medical)
         {
-            String query = " UPDATE msd.msd_student_medical_info  SET " +
-                           " insurance_company = '" + medical.InsuranceCompany + "'" +
-                           ", policy_number = '" + medical.PolicyNumber + "'" +
-                           ", phone = '" + medical.Phone + "'" +
-                           ", pediatrician_name = '" + medical.PediatricianName + "'" +
-                           ", emergency_name = '" + medical.EmergencyName + "'" +
-                           ", emergency_phone = '" + medical.EmergencyPhone + "'" +
-                           ", emergency_phone_alt = '" + medical.EmergencyPhoneAlt + "'" +
-                           " WHERE id = " + medical.Id;
+            String query = "";
+            if (medical.Id != 0)
+            {
+                query = " UPDATE student_medical  SET " +
+                               " insurance_company = '" + medical.InsuranceCompany + "'" +
+                               ", policy_number = '" + medical.PolicyNumber + "'" +
+                               ", phone = '" + medical.Phone + "'" +
+                               ", pediatrician_name = '" + medical.PediatricianName + "'" +
+                               ", emergency_name = '" + medical.EmergencyName + "'" +
+                               ", emergency_phone = '" + medical.EmergencyPhone + "'" +
+                               ", emergency_phone_alt = '" + medical.EmergencyPhoneAlt + "'" +
+                               " WHERE id = " + medical.Id;
+            }
+            else
+            {
+                query = " INSERT INTO student_medical (insurance_company, policy_number, phone, pediatrician_name, emergency_name, emergency_phone, emergency_phone_alt, student_id) VALUES (" +
+                               " '" + medical.InsuranceCompany + "'" +
+                               ", '" + medical.PolicyNumber + "'" +
+                               ", '" + medical.Phone + "'" +
+                               ", '" + medical.PediatricianName + "'" +
+                               ", '" + medical.EmergencyName + "'" +
+                               ", '" + medical.EmergencyPhone + "'" +
+                               ", '" + medical.EmergencyPhoneAlt + "'" +
+                               ", " + medical.MSDStudentId +
+                               ");";
+            }
+
             try
             {
-                MySqlCommand command = new MySqlCommand(query, conn);
+                SQLiteCommand command = new SQLiteCommand(query, lconn);
                 command.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -254,7 +308,7 @@ namespace msdWPF.Model
         internal MSDStudent FindStudentById(int id)
         {
 
-            String query = "SELECT * FROM msd.msd_student WHERE id = " + id + ";";
+            String query = "SELECT * FROM student WHERE id = " + id + ";";
             try
             {
                 SQLiteCommand command = new SQLiteCommand(query, lconn);
@@ -278,9 +332,16 @@ namespace msdWPF.Model
             }
             catch (Exception ex)
             {
-                ;
+                Console.WriteLine(ex.Message);
             }
             return null;
         }
+
+        internal List<SchoolSemester> FindAllSemesterList()
+        {
+            
+            return _MSDModel.FindAllSchoolSemester();
+        }
+
     }
 }
