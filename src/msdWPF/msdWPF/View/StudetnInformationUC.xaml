@@ -4,248 +4,247 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             xmlns:viewModel="clr-namespace:msdWPF.ViewModel"
              mc:Ignorable="d" 
-             d:DesignHeight="640" d:DesignWidth="750">
+             d:DesignHeight="800" d:DesignWidth="1000">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="200" />
-            <RowDefinition Height="180" />
+            <RowDefinition Height="170" />
+            <RowDefinition Height="90" />
             <RowDefinition Height="30" />
-            <RowDefinition Height="200" />
+            <RowDefinition Height="100" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
+        
         <Grid Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="160"/>
-            </Grid.RowDefinitions>
-            <Label Grid.Row="0" Content="Student Detail Information:" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
-            <Grid Row ="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="550"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid Column="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="40"/>
-                    </Grid.RowDefinitions>
-                    <Grid Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="80"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" FontWeight="Bold" Content="First Name:" VerticalAlignment="Center" />
-                        <TextBox Grid.Column="1" Height="26" VerticalAlignment="Center" 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="850" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Content="Student Detail Information:" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="60"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" FontWeight="Bold" Content="First Name:" VerticalAlignment="Center" />
+                    <TextBox Grid.Column="1" Height="26" VerticalAlignment="Center" 
                                  Text="{Binding Path=CurrentMSDStudent.FirstName}"
                                  IsEnabled="{Binding Path=CanEditStudentInformation}"
                                  TextChanged="StudentFirstName_onChanged"
                                  />
-                        <Label Grid.Column="2" FontWeight="Bold" Content="Last Name:" VerticalAlignment="Center" />
-                        <TextBox Grid.Column="3" Margin="0,2" VerticalAlignment="Center" 
+                    <Label Grid.Column="2" FontWeight="Bold" Content="Last Name:" VerticalAlignment="Center" />
+                    <TextBox Grid.Column="3" Margin="0,2" VerticalAlignment="Center" 
                                  Text="{Binding Path=CurrentMSDStudent.LastName}" 
                                  IsEnabled="{Binding Path=CanEditStudentInformation}"
                                  TextChanged="StudentLastName_onChanged"
                                  />
-                    </Grid>
-                    <Grid Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="60"/>
-                            <ColumnDefinition Width="60"/>
-                            <ColumnDefinition Width="60"/>
-                            <ColumnDefinition Width="60"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Gender:" FontWeight="Bold" VerticalAlignment="Center" />
-                        <RadioButton Grid.Column="1" Content="Male" VerticalAlignment="Center" 
+                    <Label Grid.Column="5" Content="Gender:" FontWeight="Bold" VerticalAlignment="Center" />
+                    <RadioButton Grid.Column="6" Content="Male" VerticalAlignment="Center" 
                                      IsChecked="{Binding Path=StudentIsMale}"
                                      IsEnabled="{Binding Path=CanEditStudentInformation}"
                                      />
-                        <RadioButton Grid.Column="2" Content="Female" VerticalAlignment="Center" 
+                    <RadioButton Grid.Column="7" Content="Female" VerticalAlignment="Center" 
                                      IsChecked="{Binding Path=StudentIsFemale}" 
                                      IsEnabled="{Binding Path=CanEditStudentInformation}"
                                      />
-                        <Label Grid.Column="3" Content="Email:" FontWeight="Bold" VerticalAlignment="Center"/>
-                        <TextBox Grid.Column="4" Height="26" VerticalAlignment="Center" 
-                                 Text="{Binding Path=CurrentMSDStudent.EmailAddress}"
-                                 IsEnabled="{Binding Path=CanEditStudentInformation}"
-                                 />
-                    </Grid>
-                    <Grid Row="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40"/>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="16"/>
-                            <ColumnDefinition Width="69"/>
-                            <ColumnDefinition Width="120"/>
-                            <ColumnDefinition Width="85"/>
-                            <ColumnDefinition Width="120"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="DOB:" FontWeight="Bold" VerticalAlignment="Center" Margin="0,2" />
-                        <DatePicker Grid.Column="1" VerticalAlignment="Center"  
-                                 SelectedDate="{Binding Path=CurrentMSDStudent.Dob, Mode=TwoWay}" 
-                                 IsEnabled="{Binding Path=CanEditStudentInformation}" Margin="0,3"
-                                 />
-                        <Label Grid.Column="2" Content="Home Phone:" FontWeight="Bold" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,2"/>
-                        <xctk:MaskedTextBox Grid.Column="4" Height="26" VerticalAlignment="Center" HorizontalContentAlignment="Right"
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Home Phone:" FontWeight="Bold" VerticalAlignment="Center" Margin="0,2"/>
+                    <xctk:MaskedTextBox Grid.Column="1" Height="26" VerticalAlignment="Center" HorizontalContentAlignment="Right"
                                  Mask="(000) 000 - 0000"
                                  Text="{Binding Path=CurrentMSDStudent.HomePhone}" 
                                  IsEnabled="{Binding Path=CanEditStudentInformation}" Margin="0,2"
                                  />
-                        <Label Grid.Column="5" Content="Cell Phone:" FontWeight="Bold" VerticalAlignment="Center" Margin="0,2"/>
-                        <xctk:MaskedTextBox Grid.Column="6" Height="26" VerticalAlignment="Center"  HorizontalContentAlignment="Right"
+                    <Label Grid.Column="2" Content="Cell Phone:" FontWeight="Bold" VerticalAlignment="Center" Margin="0,2"/>
+                    <xctk:MaskedTextBox Grid.Column="3" Height="26" VerticalAlignment="Center"  HorizontalContentAlignment="Right"
                                  Mask="(000) 000 - 0000"
                                  Text="{Binding Path=CurrentMSDStudent.CellPhone}"
                                  IsEnabled="{Binding Path=CanEditStudentInformation}" Margin="0,2"
                                  />
-                    </Grid>
-                    <Grid Row="3">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="Home Address:" FontWeight="Bold" VerticalAlignment="Center" />
-                        <TextBox Grid.Column="1" Height="26" VerticalAlignment="Center" 
+                    <Label Grid.Column="4" Content="Day of Birth:" FontWeight="Bold" VerticalAlignment="Center" Margin="0,2" />
+                    <DatePicker Grid.Column="5" VerticalAlignment="Center"  
+                                 SelectedDate="{Binding Path=CurrentMSDStudent.Dob, Mode=TwoWay}" 
+                                 IsEnabled="{Binding Path=CanEditStudentInformation}" Margin="0,3"
+                                 />
+                </Grid>
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="450"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Home Address:" FontWeight="Bold" VerticalAlignment="Center" />
+                    <TextBox Grid.Column="1" Height="26" VerticalAlignment="Center" 
                                  Text="{Binding Path=CurrentMSDStudent.HomeAddress}" 
                                  IsEnabled="{Binding Path=CanEditStudentInformation}"
                                  />
-                    </Grid>
-                    <Label Grid.Row="4" Content="Parent Information:" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
-
+                    <Label Grid.Column="2" Content="Email:" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="3" Height="26" VerticalAlignment="Center" Margin="0,2"
+                                 Text="{Binding Path=CurrentMSDStudent.EmailAddress}"
+                                 IsEnabled="{Binding Path=CanEditStudentInformation}"
+                                 />
                 </Grid>
+                <Label Grid.Row="4" Content="Parent Information:" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
             </Grid>
         </Grid>
         <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="170"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="170"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" FontWeight="Bold" Content="First Name:" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <TextBox Grid.Column="1" Height="26" VerticalAlignment="Center" 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Column="0" Margin="0,0,2,0" CornerRadius="5" >
+                <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" FontWeight="Bold" Content="First Name:" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                    <TextBox Grid.Column="1" Height="26" VerticalAlignment="Center" 
                          Text="{Binding Path=ParentOne.FirstName}" 
                          IsEnabled="{Binding Path=CanEditStudentInformation}"
                          />
-                <Label Grid.Column="2" FontWeight="Bold" Content="Last Name:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                <TextBox Grid.Column="3" Margin="0,2" VerticalAlignment="Center" 
+                    <Label Grid.Column="2" FontWeight="Bold" Content="Last Name:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Column="3" Margin="0,2" VerticalAlignment="Center" 
                          Text="{Binding Path=ParentOne.LastName}" 
                          IsEnabled="{Binding Path=CanEditStudentInformation}"
                          />
-                <Label Grid.Column="4" FontWeight="Bold" Content="Relation:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                <TextBox Grid.Column="5" Margin="0,2" VerticalAlignment="Center" 
-                         Text="{Binding Path=ParentOne.Relationship}" 
-                         IsEnabled="{Binding Path=CanEditStudentInformation}"
-                         />
-            </Grid>
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="500"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" FontWeight="Bold" Content="Email:" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <TextBox Grid.Column="1" Height="26" VerticalAlignment="Center" 
-                         Text="{Binding Path=ParentOne.EmailAddress}" 
-                         IsEnabled="{Binding Path=CanEditStudentInformation}"
-                         />
-            </Grid>
-            <Grid Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" FontWeight="Bold" Content="Cell Phone:" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <xctk:MaskedTextBox Grid.Column="1" Height="26" VerticalAlignment="Center" HorizontalContentAlignment="Right"
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" FontWeight="Bold" Content="Cell Phone:" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                    <xctk:MaskedTextBox Grid.Column="1" Height="26" VerticalAlignment="Center" HorizontalContentAlignment="Right"
                          Mask="(000) 000 - 0000"
                          Text="{Binding Path=ParentOne.CellPhone}" 
                          IsEnabled="{Binding Path=CanEditStudentInformation}"
                          />
-                <Label Grid.Column="2" FontWeight="Bold" Content="Work Phone:" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <xctk:MaskedTextBox Grid.Column="3" Height="26" VerticalAlignment="Center" HorizontalContentAlignment="Right"
+                    <Label Grid.Column="2" FontWeight="Bold" Content="Work Phone:" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                    <xctk:MaskedTextBox Grid.Column="3" Height="26" VerticalAlignment="Center" HorizontalContentAlignment="Right"
                          Mask="(000) 000 - 0000"
                          Text="{Binding Path=ParentOne.WorkPhone}" 
                          IsEnabled="{Binding Path=CanEditStudentInformation}"
                          />
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="80"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" FontWeight="Bold" Content="Email:" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                    <TextBox Grid.Column="1" Height="26" VerticalAlignment="Center" 
+                         Text="{Binding Path=ParentOne.EmailAddress}" 
+                         IsEnabled="{Binding Path=CanEditStudentInformation}"
+                         />
+                    <Label Grid.Column="2" FontWeight="Bold" Content="Relation:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Column="3" Margin="0,2" VerticalAlignment="Center" 
+                         Text="{Binding Path=ParentOne.Relationship}" 
+                         IsEnabled="{Binding Path=CanEditStudentInformation}"
+                         />
+                </Grid>
             </Grid>
-            <Grid Grid.Row="3">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="170"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="170"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" FontWeight="Bold" Content="First Name:" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <TextBox Grid.Column="1" Height="26" VerticalAlignment="Center" 
-                         Text="{Binding Path=ParentTwo.FirstName}"
+            </Border>
+            <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Column="1" Margin="2,0,0,0" CornerRadius="5" >
+                <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" FontWeight="Bold" Content="First Name:" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                    <TextBox Grid.Column="1" Height="26" VerticalAlignment="Center" 
+                         Text="{Binding Path=ParentTwo.FirstName}" 
                          IsEnabled="{Binding Path=CanEditStudentInformation}"
                          />
-                <Label Grid.Column="2" FontWeight="Bold" Content="Last Name:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                <TextBox Grid.Column="3" Margin="0,2" VerticalAlignment="Center" 
-                         Text="{Binding Path=ParentTwo.LastName}"
+                    <Label Grid.Column="2" FontWeight="Bold" Content="Last Name:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Column="3" Margin="0,2" VerticalAlignment="Center" 
+                         Text="{Binding Path=ParentTwo.LastName}" 
                          IsEnabled="{Binding Path=CanEditStudentInformation}"
                          />
-                <Label Grid.Column="4" FontWeight="Bold" Content="Relation:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                <TextBox Grid.Column="5" Margin="0,2" VerticalAlignment="Center" 
-                         Text="{Binding Path=ParentTwo.Relationship}"
-                         IsEnabled="{Binding Path=CanEditStudentInformation}"
-                         />
-            </Grid>
-            <Grid Grid.Row="4">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="500"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" FontWeight="Bold" Content="Email:" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <TextBox Grid.Column="1" Height="26" VerticalAlignment="Center"
-                         Text="{Binding Path=ParentTwo.EmailAddress}"
-                         IsEnabled="{Binding Path=CanEditStudentInformation}"
-                         />
-            </Grid>
-            <Grid Grid.Row="5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" FontWeight="Bold" Content="Cell Phone:" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <xctk:MaskedTextBox Grid.Column="1" Height="26" VerticalAlignment="Center" HorizontalContentAlignment="Right"
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" FontWeight="Bold" Content="Cell Phone:" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                    <xctk:MaskedTextBox Grid.Column="1" Height="26" VerticalAlignment="Center" HorizontalContentAlignment="Right"
                          Mask="(000) 000 - 0000"
-                         Text="{Binding Path=ParentTwo.CellPhone}"
+                         Text="{Binding Path=ParentTwo.CellPhone}" 
                          IsEnabled="{Binding Path=CanEditStudentInformation}"
                          />
-                <Label Grid.Column="2" FontWeight="Bold" Content="Work Phone:" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <xctk:MaskedTextBox Grid.Column="3" Height="26" VerticalAlignment="Center" HorizontalContentAlignment="Right"
+                    <Label Grid.Column="2" FontWeight="Bold" Content="Work Phone:" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                    <xctk:MaskedTextBox Grid.Column="3" Height="26" VerticalAlignment="Center" HorizontalContentAlignment="Right"
                          Mask="(000) 000 - 0000"
-                         Text="{Binding Path=ParentTwo.WorkPhone}"
+                         Text="{Binding Path=ParentTwo.WorkPhone}" 
                          IsEnabled="{Binding Path=CanEditStudentInformation}"
                          />
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="80"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" FontWeight="Bold" Content="Email:" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                    <TextBox Grid.Column="1" Height="26" VerticalAlignment="Center" 
+                         Text="{Binding Path=ParentTwo.EmailAddress}" 
+                         IsEnabled="{Binding Path=CanEditStudentInformation}"
+                         />
+                    <Label Grid.Column="2" FontWeight="Bold" Content="Relation:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Column="3" Margin="0,2" VerticalAlignment="Center" 
+                         Text="{Binding Path=ParentTwo.Relationship}" 
+                         IsEnabled="{Binding Path=CanEditStudentInformation}"
+                         />
+                </Grid>
             </Grid>
+            </Border>
         </Grid>
         <Grid Grid.Row="2">
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
@@ -253,32 +252,32 @@
                         Content="{Binding Path=StudentInformationEditButtonLabel}" 
                         Click="StudentInformationEdit_onClick"
                         />
-                <Button Height="25" Width="80" Margin="0,0,10,0" Content="Save" 
+                <Button Height="25" Width="80" Margin="0,0,0,0" Content="Save" 
                         IsEnabled="{Binding Path=CanClickStudentInformationSave}" 
                         Click="StudnetInformationSave_onClick"
                         />
             </StackPanel>
         </Grid>
+        
         <Grid Grid.Row="3">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="60"/>
-            </Grid.RowDefinitions>
-            <Label Grid.Row="0" Content="Student Medical Information:" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
-            <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Column="0" Margin="2,0,0,0" CornerRadius="5" >
+                <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
+                <Label Grid.Row="0" Content="Student Medical Information:" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
+                <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="330"/>
-                        <ColumnDefinition Width="80"/>
-                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="130"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="130"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Content="Insurance Company:" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right" />
                     <TextBox Grid.Column="1" Margin="0,2" VerticalAlignment="Center" 
@@ -291,13 +290,12 @@
                              IsEnabled="{Binding Path=CanEditStudentMedical}"
                              />
                 </Grid>
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="330"/>
-                        <ColumnDefinition Width="80"/>
-                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="130"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="130"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Content="Pediatrician's Name:" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right" />
                     <TextBox Grid.Column="1" Margin="0,2" VerticalAlignment="Center" 
@@ -312,16 +310,18 @@
                              />
                 </Grid>
             </Grid>
-            <Label Grid.Row="2" Content="Emergency Notification:" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
-            <Grid Grid.Row="3">
+            </Border>
+            <Border BorderBrush="DarkGray" BorderThickness="1" Grid.Column="1" Margin="2,0,0,0" CornerRadius="5" >
+                <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
+                <Label Grid.Row="0" Content="Emergency Notification:" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
+                <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="560"/>
+                        <ColumnDefinition Width="130"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Content="Contact Name:" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right" />
@@ -330,13 +330,11 @@
                              IsEnabled="{Binding Path=CanEditStudentMedical}"
                              />
                 </Grid>
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="2" >
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="170"/>
-                        <ColumnDefinition Width="90"/>
                         <ColumnDefinition Width="130"/>
-                        <ColumnDefinition Width="170"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="130"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Content="Contact Phone:" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right" />
@@ -345,22 +343,24 @@
                              Text="{Binding Path=CurrentStudentMedical.EmergencyPhone}" 
                              IsEnabled="{Binding Path=CanEditStudentMedical}"
                              />
-                    <Label Grid.Column="3" Content="Alternate Phone:" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                    <xctk:MaskedTextBox Grid.Column="4" Margin="0,2" VerticalAlignment="Center" HorizontalContentAlignment="Right"
+                    <Label Grid.Column="2" Content="Alternate Phone:" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                    <xctk:MaskedTextBox Grid.Column="3" Margin="0,2" VerticalAlignment="Center" HorizontalContentAlignment="Right"
                              Mask="(000) 000 - 0000"
                              Text="{Binding Path=CurrentStudentMedical.EmergencyPhoneAlt}" 
                              IsEnabled="{Binding Path=CanEditStudentMedical}"
                              />
                 </Grid>
             </Grid>
+            </Border>            
         </Grid>
+            
         <Grid Grid.Row="4">
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                 <Button Height="25" Width="80" Margin="0,0,10,0" 
                         Content="{Binding Path=StudentMedicalEditButtonLabel}" 
                         Click="MedicalInformationEdit_onClick"
                         />
-                <Button Height="25" Width="80" Margin="0,0,10,0" Content="Save" 
+                <Button Height="25" Width="80" Margin="0,0,0,0" Content="Save" 
                         IsEnabled="{Binding Path=CanClickStudentMedicalSave}" 
                         Click="MedicalInformationSave_onClick"
                         />

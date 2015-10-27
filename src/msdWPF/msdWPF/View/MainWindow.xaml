@@ -4,7 +4,7 @@
         xmlns:msdWpf="clr-namespace:msdWPF.ViewModel"
         xmlns:view="clr-namespace:msdWPF.View"
         Loaded="UserControl_Loaded"
-        Title="MSD Login" Height="1000" Width="1000" WindowStyle="ThreeDBorderWindow" HorizontalAlignment="Center" VerticalAlignment="Top">
+        Title="MSD Login" Height="800" Width="1300" WindowStyle="ThreeDBorderWindow" HorizontalAlignment="Center" VerticalAlignment="Top">
     <Window.Resources>
         <msdWpf:MainWindowViewModel x:Key="mainWindowViewModel" />
     </Window.Resources>
@@ -31,7 +31,7 @@
                 Click="LoginLogoutButton_OnClick"
                 VerticalAlignment="Center" HorizontalAlignment="Right" Height="25" Width="100" />
         </Grid>
-        <TabControl Width="900" Grid.Row="2"
+        <TabControl Width="1200" Grid.Row="2"
                     Name="MainTabControl" Visibility="{Binding Path=ShowMainTabControl}">
             <TabControl.Resources>
                 <Style TargetType="{x:Type TabItem}">
