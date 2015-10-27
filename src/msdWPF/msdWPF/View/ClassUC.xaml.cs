@@ -35,5 +35,65 @@ namespace msdWPF.View
             }
         }
 
+        private void OnChangedSelectedClassType(object sender, SelectionChangedEventArgs e)
+        {
+            _viewModel.NotifyPropertyChanged("SchoolClassList");
+            _viewModel.NotifyPropertyChanged("CanSelecteCurrentClass");
+            _viewModel.NotifyPropertyChanged("CanAddNewClass");
+        }
+
+        private void OnChangeSelectedSemester(object sender, SelectionChangedEventArgs e)
+        {
+            _viewModel.NotifyPropertyChanged("SchoolClassList");
+            _viewModel.NotifyPropertyChanged("CanSelecteCurrentClass");
+            _viewModel.NotifyPropertyChanged("CanAddNewClass");
+        }
+
+        private void ClearClass_onClick(object sender, RoutedEventArgs e)
+        {
+            _viewModel.ClearSelectSchoolClass();
+            SchoolClassComboBox.SelectedIndex = -1;
+        }
+
+        private void CurrentSelectedClassChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _viewModel.CurrentSelectedClass = (SchoolClass)SchoolClassComboBox.SelectedItem;
+        }
+
+        private void AddClass_onClick(object sender, RoutedEventArgs e)
+        {
+            _viewModel.AddNewClass();
+        }
+
+        private void ClassInformationEdit_onClick(object sender, RoutedEventArgs e)
+        {
+            _viewModel.EditCurrentClassInformationClick();
+        }
+
+        private void ClassInformationSave_onClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NonClassDateEdit_onClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NonClassDateEditCancel_onClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NonClassDateEditSave_onClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NonClassDateEditDelete_onClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }

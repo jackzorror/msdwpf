@@ -72,7 +72,7 @@ namespace msdWPF.Model
 
         public List<String> FindAllStudentLastName()
         {
-            String query = "SELECT distinct(last_name) FROM student order by last_name;";
+            String query = "SELECT distinct(last_name) FROM student WHERE is_active = 1 order by last_name;";
             try
             {
                 List<String> nameList = new List<string>();
@@ -95,7 +95,7 @@ namespace msdWPF.Model
 
         internal List<string> FindAllStudentFirstName()
         {
-            String query = "SELECT distinct(first_name) FROM student order by first_name;";
+            String query = "SELECT distinct(first_name) FROM student WHERE is_active = 1 order by first_name;";
             try
             {
                 List<String> nameList = new List<string>();

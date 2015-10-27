@@ -100,6 +100,7 @@
     <Compile Include="Model\MSDStudent.cs" />
     <Compile Include="Model\MSDStudentMedical.cs" />
     <Compile Include="Model\MSDStudentParent.cs" />
+    <Compile Include="Model\SchoolClass.cs" />
     <Compile Include="Model\SchoolSemester.cs" />
     <Compile Include="Model\StudentModel.cs" />
     <Compile Include="ViewModel\ClassViewModel.cs" />

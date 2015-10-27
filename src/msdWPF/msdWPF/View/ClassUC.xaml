@@ -11,23 +11,27 @@
     </UserControl.Resources>
     <Grid DataContext="{Binding Source={StaticResource classViewModel}}" Margin="0,5,0,-5">
         <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
             <RowDefinition Height="30" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="160" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Label Grid.Row="1" FontSize="14" FontWeight="Bold" Foreground="Red" HorizontalAlignment="Right" Content="{Binding Path=ClassOpertionErrorMesage}" />
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="90"/>
-                <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="250"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" FontWeight="Bold" Content="Semester :" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-            <ComboBox Grid.Column="1" Height="25" 
+            <ComboBox Grid.Column="1" Height="25" VerticalAlignment="Center"
                       ItemsSource="{Binding Path=SemesterListForClass}"
+                      SelectedItem="{Binding Path=SelectedSchoolSemester}"
+                      SelectionChanged="OnChangeSelectedSemester"
                       >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -38,8 +42,10 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <Label Grid.Column="2" FontWeight="Bold" Content="Class Type :" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Right" />
-            <ComboBox Grid.Column="3" Height="25" 
+            <ComboBox Grid.Column="3" Height="25" VerticalAlignment="Center"
                       ItemsSource="{Binding Path=ClassTypeList}"
+                      SelectedItem="{Binding Path=SelectedClassType}"
+                       SelectionChanged="OnChangedSelectedClassType"
                       >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -50,10 +56,138 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <Label Grid.Column="4" FontWeight="Bold" Content="Class Name :" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-            <ComboBox Grid.Column="5" Height="25" 
+            <ComboBox Name="SchoolClassComboBox" Grid.Column="5" Height="25" VerticalAlignment="Center"
+                      ItemsSource="{Binding Path=SchoolClassList}"
+                      IsEnabled="{Binding Path=CanSelecteCurrentClass}"
+                      SelectionChanged="CurrentSelectedClassChanged"
                       >
-
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" MinHeight="20">
+                            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Name}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
+            <StackPanel Grid.Column="6" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Height="25" Width="80" Margin="0,0,10,0" HorizontalAlignment="Right" Content="Clear" Click="ClearClass_onClick"/>
+                <Button Height="25" Width="80" HorizontalAlignment="Right" IsEnabled="{Binding Path=CanAddNewClass}" Content="Add" Click="AddClass_onClick"/>
+            </StackPanel>
         </Grid>
+        <Border Grid.Row="2" BorderBrush="DarkGray" BorderThickness="1" Margin="0,0,2,0" CornerRadius="5" 
+                Visibility="{Binding Path=ShowClassInformationPanel}" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Class Detail Information:" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Height="25" Width="80" Margin="0,0,10,0" 
+                        Content="{Binding Path=ClassInformationEditButtonLabel}" 
+                        Click="ClassInformationEdit_onClick"
+                        />
+                        <Button Height="25" Width="80" Margin="0,0,10,0" Content="Save" 
+                        IsEnabled="{Binding Path=CanClickClassInformationSave}" 
+                        Click="ClassInformationSave_onClick"
+                        />
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="105"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="10"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Class Name :"  FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Margin="0,2"
+                             Text="{Binding Path=CurrentSelectedClass.Name}"
+                             IsEnabled="{Binding Path=CanEditClassIfnormation}"
+                             />
+                    <Label Grid.Column="2" Content="Start Date :" HorizontalAlignment="Right" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <DatePicker Grid.Column="3" Height="26" VerticalAlignment="Center"
+                             SelectedDate="{Binding Path=CurrentSelectedClass.StartDate}"
+                             IsEnabled="{Binding Path=CanEditClassIfnormation}"
+                             />
+                    <Label Grid.Column="4" Content="End Date :" HorizontalAlignment="Right" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <DatePicker Grid.Column="5" Height="26" VerticalAlignment="Center"
+                             SelectedDate="{Binding Path=CurrentSelectedClass.EndDate}"
+                             IsEnabled="{Binding Path=CanEditClassIfnormation}"
+                             />
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="105"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="10"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Non Class Date :"  FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Margin="0,2" VerticalAlignment="Center" IsEnabled="False"  Text="{Binding Path=NonClassDateList}"/>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment=" Right">
+                        <Button Height="25" Width="80" Content="Edit" 
+                        IsEnabled="{Binding Path=CanEditClassIfnormation}" 
+                        Click="NonClassDateEdit_onClick"
+                        />
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Popup Name="NonClassDateEditPopup" Width="500" Height="230" StaysOpen="True" Placement="Center" PopupAnimation="Fade" AllowsTransparency="False">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Content="Non Class Date Information:" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
+                <DataGrid Grid.Row="1" Grid.Column="1" Grid.RowSpan="5">
+                    
+                </DataGrid>
+                <Button Grid.Row="4" Grid.Column="2" Height="25" Width="80" Margin="0,0,10,0" Content="Delete" 
+                        Click="NonClassDateEditDelete_onClick"
+                        />
+                <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Height="25" Width="80" Margin="0,0,10,0" Content="Cancel" 
+                        Click="NonClassDateEditCancel_onClick"
+                        />
+                    <Button Height="25" Width="80" Margin="0,0,10,0" Content="Save" 
+                        Click="NonClassDateEditSave_onClick"
+                        />
+                </StackPanel>
+            </Grid>
+        </Popup>
     </Grid>
 </UserControl>

@@ -13,7 +13,7 @@
     </UserControl.Resources>
     <Grid DataContext="{Binding Source={StaticResource studentViewModel}}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="30" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -22,20 +22,22 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="300" />
                 <ColumnDefinition Width="120" />
-                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="100" />
                 <ColumnDefinition Width="120" />
-                <ColumnDefinition Width="90" />
-                <ColumnDefinition Width="90" />
-                <ColumnDefinition Width="90" />
-                <ColumnDefinition Width="90" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="10"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="Please search student by First Name" FontSize="14" FontWeight="Bold" HorizontalAlignment="Right" Margin="0,0,5,0"/>
-            <toolkit:AutoCompleteBox Name="FirstNameBox" Grid.Column="1" Height="25" 
+            <Label Grid.Column="0" Content="Please search student by First Name :" 
+                   FontSize="16" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <toolkit:AutoCompleteBox Name="FirstNameBox" Grid.Column="1" Height="25" VerticalAlignment="Center"
                                      ItemsSource="{Binding Path=FirstNameSearchList}"
                                      Text="{Binding Path=SearchFirstName, Mode=TwoWay}"/>
-            <Label Grid.Column="2" Content="Last Name" FontSize="14" FontWeight="Bold" HorizontalAlignment="Right" />
-            <toolkit:AutoCompleteBox Grid.Column="3" Height="25" 
+            <Label Grid.Column="2" Content="Last Name :" 
+                   FontSize="16" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right" />
+            <toolkit:AutoCompleteBox Grid.Column="3" Height="25" VerticalAlignment="Center"
                                      ItemsSource="{Binding Path=LastNameSearchList}"
                                      Text="{Binding Path=SearchLastName, Mode=TwoWay}" KeyUp="StudentLastNameSearch_OnKeyUp"/>
             <Button Grid.Column="5" Height="25" Width="80" HorizontalAlignment="Right" Content="Search" Click="StudentSearch_onClick"/>
