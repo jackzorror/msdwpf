@@ -28,5 +28,12 @@ namespace msdWPF.Model
         {
             return _MSDModel.FindAllSchoolSemester();
         }
+
+        internal List<ApplicationType> FindClassTypeList()
+        {
+            List<ApplicationType> atypes = _MSDModel.FindAllApplicationTypes();
+            List<ApplicationType> ctypes = atypes.FindAll(x => x.Type.Equals("CLASS_TYPE"));
+            return ctypes;
+        } 
     }
 }

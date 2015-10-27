@@ -47,6 +47,31 @@ namespace msdWPF.Model
                 Console.Write(ex.Message);
             }
             return semesters;
+        }
+
+        public List<ApplicationType> FindAllApplicationTypes()
+        {
+            String query = "SELECT * FROM application_type;";
+            List<ApplicationType> types = new List<ApplicationType>();
+            try
+            {
+                SQLiteCommand command = new SQLiteCommand(query, conn);
+                SQLiteDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    ApplicationType type = new ApplicationType();
+                    type.Id = System.DBNull.Value != reader["id"] ? Convert.ToInt32(reader["id"]) : 0;
+                    type.Name = System.DBNull.Value != reader["name"] ? (String)reader["name"] : null;
+                    type.Type = System.DBNull.Value != reader["type"] ? (String)reader["type"] : null;
+
+                    types.Add(type);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+            }
+            return types;
         } 
     }
 }

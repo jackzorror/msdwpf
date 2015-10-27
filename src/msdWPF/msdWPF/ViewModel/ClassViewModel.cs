@@ -48,7 +48,21 @@ namespace msdWPF.ViewModel
             }
         }
 
-        private List<SchoolSemester> _semesterList; 
+        private List<SchoolSemester> _semesterList;
+
+        public List<ApplicationType> ClassTypeList
+        {
+            get
+            {
+                if (null == _classTypeList && null != _classModel)
+                {
+                    _classTypeList = _classModel.FindClassTypeList();
+                }
+                return _classTypeList;
+            }
+        }
+
+        private List<ApplicationType> _classTypeList; 
 
         public String ClassOpertionErrorMesage { get; set; }
 

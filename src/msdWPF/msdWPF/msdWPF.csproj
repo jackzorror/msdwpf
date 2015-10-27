@@ -93,6 +93,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\ApplicationType.cs" />
     <Compile Include="Model\ClassModel.cs" />
     <Compile Include="Model\MSDModel.cs" />
     <Compile Include="Model\MSDModelUtil.cs" />
