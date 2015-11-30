@@ -42,10 +42,10 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <Label Grid.Column="2" FontWeight="Bold" Content="Class Type :" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Right" />
-            <ComboBox Grid.Column="3" Height="25" VerticalAlignment="Center"
+            <ComboBox Grid.Column="3" Height="24" VerticalAlignment="Center"
                       ItemsSource="{Binding Path=ClassTypeList}"
                       SelectedItem="{Binding Path=SelectedClassType}"
-                       SelectionChanged="OnChangedSelectedClassType"
+                       SelectionChanged="OnChangedSelectedClassType" HorizontalAlignment="Left" Margin="0,8" Width="150"
                       >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -56,8 +56,8 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <Label Grid.Column="4" FontWeight="Bold" Content="Class Name :" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" />
-            <ComboBox Name="SchoolClassComboBox" Grid.Column="5" Height="25" VerticalAlignment="Center"
-                      ItemsSource="{Binding Path=SchoolClassList}"
+            <ComboBox Name="SchoolClassSummaryComboBox" Grid.Column="5" Height="25" VerticalAlignment="Center"
+                      ItemsSource="{Binding Path=SchoolClassSummaryList}"
                       IsEnabled="{Binding Path=CanSelecteCurrentClass}"
                       SelectionChanged="CurrentSelectedClassChanged"
                       >
@@ -70,6 +70,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <StackPanel Grid.Column="6" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Height="25" Width="80" Margin="0,0,10,0" HorizontalAlignment="Right" IsEnabled="{Binding Path=CanSearchClass}" Content="Search" Click="SearchClass_onClick"/>
                 <Button Height="25" Width="80" Margin="0,0,10,0" HorizontalAlignment="Right" Content="Clear" Click="ClearClass_onClick"/>
                 <Button Height="25" Width="80" HorizontalAlignment="Right" IsEnabled="{Binding Path=CanAddNewClass}" Content="Add" Click="AddClass_onClick"/>
             </StackPanel>
@@ -135,10 +136,9 @@
                         <ColumnDefinition Width="10"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Content="Non Class Date :"  FontWeight="Bold" VerticalAlignment="Center"/>
-                    <TextBox Grid.Column="1" Margin="0,2" VerticalAlignment="Center" IsEnabled="False"  Text="{Binding Path=NonClassDateList}"/>
+                    <TextBox Grid.Column="1" Margin="0,2" VerticalAlignment="Center" IsEnabled="False"  Text="{Binding Path=NonClassDateListString}"/>
                     <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment=" Right">
                         <Button Height="25" Width="80" Content="Edit" 
-                        IsEnabled="{Binding Path=CanEditClassIfnormation}" 
                         Click="NonClassDateEdit_onClick"
                         />
                     </StackPanel>
@@ -153,11 +153,68 @@
                         <ColumnDefinition Width="100"/>
                     </Grid.ColumnDefinitions>
                 </Grid>
+
             </Grid>
         </Border>
+        <Popup Name="NonClassDateEditPopup" Width="430" Height="300" StaysOpen="True" Placement="Center" PopupAnimation="Fade" AllowsTransparency="False" Margin="250,10,250,70" Grid.RowSpan="3">
+            <Border BorderBrush="DarkGray" BorderThickness="2" Background="White">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="130"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Content="Non Class Date Information:" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
+                    <Label Grid.Row="1" Grid.Column="0" Content="Select Date :" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <DatePicker Grid.Row="1" Grid.Column="1" Height="25" SelectedDate="{Binding Path=SelectedNonClassDateForAdd}"/>
+                    <Button Grid.Row="1" Grid.Column="2" Height="25" Width="80" Margin="0,0,10,0" Content="Add" HorizontalAlignment="Right"
+                            IsEnabled="{Binding Path=CanAddNonClassDate}"
+                            Click="NonClassDateEditAdd_onClick"
+                            />  
+                    <Label Grid.Row="2" Grid.Column="0" Content="Non Class Date :" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"/>
 
+                    <ListView Name="NonClassDateListView" Grid.Row="2" Grid.Column="1" Grid.RowSpan="2" HorizontalAlignment="Center" Height="Auto" HorizontalContentAlignment="Stretch" 
+                              ItemsSource="{Binding Path=NonClassDateList,Mode=TwoWay}"
+                              SelectedItem="{Binding Path=SelectedNonClassDateForDelete}"
+                              BorderThickness="0" >
+                        <ListView.Resources>
+                            <Style TargetType="GridViewColumnHeader">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </Style>
+                        </ListView.Resources>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn DisplayMemberBinding="{Binding Path=NonClassDateTime, StringFormat='MM-dd-yyyy'}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Button Grid.Row="3" Grid.Column="2" Height="25" Width="80" Margin="0,0,10,0" Content="Delete" HorizontalAlignment="Right"
+                            IsEnabled="{Binding Path=CanDeleteNonClassDate}"
+                            Click="NonClassDateEditDelete_onClick"
+                            />
+                    <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Height="25" Width="80" Margin="0,0,10,0" Content="Cancel" 
+                        Click="NonClassDateEditCancel_onClick"
+                        />
+                        <Button Height="25" Width="80" Margin="0,0,10,0" Content="Save" 
+                        Click="NonClassDateEditSave_onClick"
+                        />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Popup>
+        <!--
         <Popup Name="NonClassDateEditPopup" Width="500" Height="230" StaysOpen="True" Placement="Center" PopupAnimation="Fade" AllowsTransparency="False">
-            <Grid>
+            <Border BorderBrush="DarkGray" BorderThickness="2" Background="White">
+
+                <Grid Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="30"/>
@@ -174,7 +231,7 @@
                 </Grid.ColumnDefinitions>
                 <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Content="Non Class Date Information:" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
                 <DataGrid Grid.Row="1" Grid.Column="1" Grid.RowSpan="5">
-                    
+
                 </DataGrid>
                 <Button Grid.Row="4" Grid.Column="2" Height="25" Width="80" Margin="0,0,10,0" Content="Delete" 
                         Click="NonClassDateEditDelete_onClick"
@@ -188,6 +245,8 @@
                         />
                 </StackPanel>
             </Grid>
+                </Border>
         </Popup>
+        -->
     </Grid>
 </UserControl>

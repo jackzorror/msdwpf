@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,14 +38,14 @@ namespace msdWPF.View
 
         private void OnChangedSelectedClassType(object sender, SelectionChangedEventArgs e)
         {
-            _viewModel.NotifyPropertyChanged("SchoolClassList");
+            _viewModel.NotifyPropertyChanged("SchoolClassSummaryList");
             _viewModel.NotifyPropertyChanged("CanSelecteCurrentClass");
             _viewModel.NotifyPropertyChanged("CanAddNewClass");
         }
 
         private void OnChangeSelectedSemester(object sender, SelectionChangedEventArgs e)
         {
-            _viewModel.NotifyPropertyChanged("SchoolClassList");
+            _viewModel.NotifyPropertyChanged("SchoolClassSummaryList");
             _viewModel.NotifyPropertyChanged("CanSelecteCurrentClass");
             _viewModel.NotifyPropertyChanged("CanAddNewClass");
         }
@@ -52,12 +53,12 @@ namespace msdWPF.View
         private void ClearClass_onClick(object sender, RoutedEventArgs e)
         {
             _viewModel.ClearSelectSchoolClass();
-            SchoolClassComboBox.SelectedIndex = -1;
+            SchoolClassSummaryComboBox.SelectedIndex = -1;
         }
 
         private void CurrentSelectedClassChanged(object sender, SelectionChangedEventArgs e)
         {
-            _viewModel.CurrentSelectedClass = (SchoolClass)SchoolClassComboBox.SelectedItem;
+            _viewModel.SelectedSchoolClassSummary = (SchoolClassSummary)SchoolClassSummaryComboBox.SelectedItem;
         }
 
         private void AddClass_onClick(object sender, RoutedEventArgs e)
@@ -72,27 +73,63 @@ namespace msdWPF.View
 
         private void ClassInformationSave_onClick(object sender, RoutedEventArgs e)
         {
+            _viewModel.SaveCurrentSchoolClass();
 
+            SchoolClassSummaryComboBox.SelectedItem = _viewModel.SelectedSchoolClassSummary;
+            //((SchoolClassSummary)SchoolClassSummaryComboBox.SelectedItem).Name = _viewModel.CurrentSelectedClass.Name;
         }
 
         private void NonClassDateEdit_onClick(object sender, RoutedEventArgs e)
         {
-
+            NonClassDateEditPopup.IsOpen = true;
+            _viewModel.EditNonClassDate();
+            ICollectionView view = CollectionViewSource.GetDefaultView(NonClassDateListView.ItemsSource);
+            if (null != view)
+            {
+                view.SortDescriptions.Clear();
+                view.SortDescriptions.Add(new SortDescription("NonClassDateTime", ListSortDirection.Ascending));
+                view.Refresh();
+            }
         }
 
         private void NonClassDateEditCancel_onClick(object sender, RoutedEventArgs e)
         {
-
+            NonClassDateEditPopup.IsOpen = false;
+            _viewModel.CancelEditNonClassDate();
         }
 
         private void NonClassDateEditSave_onClick(object sender, RoutedEventArgs e)
         {
-
+            NonClassDateEditPopup.IsOpen = false;
+            _viewModel.SaveEditNonClassDate();
         }
 
         private void NonClassDateEditDelete_onClick(object sender, RoutedEventArgs e)
         {
+            _viewModel.DeletSelectedNonClassDate();
+            /*
+            ICollectionView view = CollectionViewSource.GetDefaultView(NonClassDateListView.ItemsSource);
+            view.SortDescriptions.Clear();
+            view.SortDescriptions.Add(new SortDescription("NonClassDateTime", ListSortDirection.Ascending));
+            view.Refresh();
+            */
+        }
 
+        private void SearchClass_onClick(object sender, RoutedEventArgs e)
+        {
+            _viewModel.SearchSchoolClass();
+        }
+
+        private void NonClassDateEditAdd_onClick(object sender, RoutedEventArgs e)
+        {
+            _viewModel.AddNonClassDate();
+            ICollectionView view = CollectionViewSource.GetDefaultView(NonClassDateListView.ItemsSource);
+            if (null != view)
+            {
+                view.SortDescriptions.Clear();
+                view.SortDescriptions.Add(new SortDescription("NonClassDateTime", ListSortDirection.Ascending));
+                view.Refresh();
+            }
         }
 
     }
