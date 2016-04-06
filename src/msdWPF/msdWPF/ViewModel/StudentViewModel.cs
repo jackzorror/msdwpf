@@ -148,6 +148,9 @@ namespace msdWPF.ViewModel
             set
             {
                 _curMsdStudent = value;
+
+                if (null == _curMsdStudent) return;
+
                 if (!(String.IsNullOrEmpty(_curMsdStudent.Gender)))
                 {
                     if (_curMsdStudent.Gender.Equals("M"))
@@ -228,7 +231,8 @@ namespace msdWPF.ViewModel
 
                 CurrentMSDStudent = student;
                 
-                _msdStudentParents = _studentModel.FindStudentParentsByStudentId(CurrentMSDStudent.Id);
+                if (null != CurrentMSDStudent && 0 != CurrentMSDStudent.Id)
+                    _msdStudentParents = _studentModel.FindStudentParentsByStudentId(CurrentMSDStudent.Id);
 
                 StudentInformationEditButtonLabel = "Edit";
                 CanEditStudentInformation = false;
@@ -250,7 +254,8 @@ namespace msdWPF.ViewModel
             }
             else if (StudentMedicalEditButtonLabel.Equals("Cancel"))
             {
-                _msdStudentMedical = _studentModel.FindStudentMedicalByStudentId(CurrentMSDStudent.Id);
+                if (null != CurrentMSDStudent && 0 != CurrentMSDStudent.Id)
+                    _msdStudentMedical = _studentModel.FindStudentMedicalByStudentId(CurrentMSDStudent.Id);
 
                 StudentMedicalEditButtonLabel = "Edit";
                 CanEditStudentMedical = false;
@@ -311,7 +316,14 @@ namespace msdWPF.ViewModel
 
         internal void SaveStudentMedical()
         {
-            if (CurrentStudentMedical.Id == 0)
+            if (null == CurrentMSDStudent || 0 == CurrentMSDStudent.Id)
+            {
+                StudentSearchErrorMesage = "Please save student information first.";
+                NotifyPropertyChanged("");
+                return;
+            }
+
+            if (CurrentStudentMedical.Id != 0)
                 CurrentStudentMedical.MSDStudentId = CurrentMSDStudent.Id;
 
             _studentModel.SaveStudentMedical(CurrentStudentMedical);

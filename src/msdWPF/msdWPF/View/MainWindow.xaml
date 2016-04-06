@@ -31,7 +31,8 @@
                 Click="LoginLogoutButton_OnClick"
                 VerticalAlignment="Center" HorizontalAlignment="Right" Height="25" Width="100" />
         </Grid>
-        <TabControl Width="1200" Grid.Row="2"
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <TabControl Width="1200"
                     Name="MainTabControl" Visibility="{Binding Path=ShowMainTabControl}">
             <TabControl.Resources>
                 <Style TargetType="{x:Type TabItem}">
@@ -75,6 +76,8 @@
                 <view:ClassUC x:Name="ClasPanel" />
             </TabItem>
         </TabControl>
+        </ScrollViewer>
+
         <Popup Name="LoginPopup" Width="300" Height="200" IsOpen="{Binding Path=LoginPopupIsOpen}" StaysOpen="True" Placement="Center" PopupAnimation="Fade" AllowsTransparency="False">
             <Border BorderBrush="DarkGray" BorderThickness="2" Background="White">
                 <Grid Margin="10">

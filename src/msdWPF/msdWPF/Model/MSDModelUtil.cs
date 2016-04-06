@@ -42,7 +42,7 @@ namespace msdWPF.Model
         {
             if (null == _sqLiteConnection)
             {
-                string inputFile = "E:\\msd\\msdgit\\msdwpf\\db\\msd_sqlite.s3db";
+                string inputFile = "C:\\msd\\msdwpf\\db\\msd_sqlite.s3db";
                 string dbConnection = String.Format("Data Source={0}", inputFile);
                 _sqLiteConnection = new SQLiteConnection(dbConnection);
                 try
