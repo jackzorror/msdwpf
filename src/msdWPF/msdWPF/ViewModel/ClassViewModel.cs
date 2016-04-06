@@ -193,6 +193,7 @@ namespace msdWPF.ViewModel
             CanEditClassIfnormation = true;
             CanClickClassInformationSave = true;
             NonClassDateListString = null;
+            NonClassDateList = null;
             NotifyPropertyChanged("");
         }
 
@@ -202,6 +203,7 @@ namespace msdWPF.ViewModel
             SelectedClassType = null;
             SelectedSchoolSemester = null;
             _currentSelectedClass = null;
+            _schoolClassSummaryList = null;
 
             ClassOpertionErrorMesage = "";
             ShowClassInformationPanel = "Hidden";
@@ -209,6 +211,7 @@ namespace msdWPF.ViewModel
             CanEditClassIfnormation = false;
             CanClickClassInformationSave = false;
             NonClassDateListString = null;
+            NonClassDateList = null;
 
             NotifyPropertyChanged("");
         }
@@ -280,6 +283,10 @@ namespace msdWPF.ViewModel
                 ClassInformationEditButtonLabel = "Edit";
                 CanClickClassInformationSave = false;
                 CanEditClassIfnormation = false;
+                if (null == CurrentSelectedClass.Id || 0 == CurrentSelectedClass.Id)
+                {
+                    ClearSelectSchoolClass();
+                }
             }
             ClassOpertionErrorMesage = "";
             NotifyPropertyChanged("");
@@ -377,9 +384,22 @@ namespace msdWPF.ViewModel
                       item.NonClassDateTime != SelectedNonClassDateForDelete.NonClassDateTime
                 select item).ToList();
 
-            _deleteNonClassDateList.Add(SelectedNonClassDateForDelete);
+            if (!_addNonClassDateList.Any(item => item.NonClassDateTime.Equals(SelectedNonClassDateForDelete.NonClassDateTime)))
+            {
+                _deleteNonClassDateList.Add(SelectedNonClassDateForDelete);
+            }
+            else
+            {
+                _addNonClassDateList.Remove(
+                    _addNonClassDateList.Find(item => item.NonClassDateTime.Equals(SelectedNonClassDateForDelete.NonClassDateTime)));
+            }
+
             SelectedNonClassDateForDelete = null;
             NotifyPropertyChanged("");
+        }
+
+        internal void EditClassScheduler()
+        {
         }
     }
 }

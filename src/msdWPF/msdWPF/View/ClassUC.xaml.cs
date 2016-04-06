@@ -132,5 +132,31 @@ namespace msdWPF.View
             }
         }
 
+        private void ClassSchedulerEdit_onClick(object sender, RoutedEventArgs e)
+        {
+            ClassSchedulerEditPopup.IsOpen = true;
+            _viewModel.EditClassScheduler();
+        }
+
+        private void ClassSchedulerEditAdd_onClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ClassSchedulerEditDelete_onClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ClassSchedulerEditCancel_onClick(object sender, RoutedEventArgs e)
+        {
+            ClassSchedulerEditPopup.IsOpen = false;
+        }
+
+        private void ClassSchedulerEditSave_onClick(object sender, RoutedEventArgs e)
+        {
+            ClassSchedulerEditPopup.IsOpen = false;
+        }
+
     }
 }
