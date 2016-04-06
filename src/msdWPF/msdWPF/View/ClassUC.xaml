@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:viewModel="clr-namespace:msdWPF.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1000">
@@ -135,6 +136,21 @@
                         <ColumnDefinition Width="90"/>
                         <ColumnDefinition Width="10"/>
                     </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Class Scheduler :"  FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="1" Margin="0,2" VerticalAlignment="Center" IsEnabled="False"  Text="{Binding Path=ClassSchedulerString}"/>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment=" Right">
+                        <Button Height="25" Width="80" Content="Edit" 
+                        Click="ClassSchedulerEdit_onClick"
+                        />
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="105"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="10"/>
+                    </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Content="Non Class Date :"  FontWeight="Bold" VerticalAlignment="Center"/>
                     <TextBox Grid.Column="1" Margin="0,2" VerticalAlignment="Center" IsEnabled="False"  Text="{Binding Path=NonClassDateListString}"/>
                     <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment=" Right">
@@ -142,11 +158,6 @@
                         Click="NonClassDateEdit_onClick"
                         />
                     </StackPanel>
-                </Grid>
-                <Grid Grid.Row="3">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"/>
-                    </Grid.ColumnDefinitions>
                 </Grid>
                 <Grid Grid.Row="4">
                     <Grid.ColumnDefinitions>
@@ -210,43 +221,48 @@
                 </Grid>
             </Border>
         </Popup>
-        <!--
-        <Popup Name="NonClassDateEditPopup" Width="500" Height="230" StaysOpen="True" Placement="Center" PopupAnimation="Fade" AllowsTransparency="False">
+        <Popup Name="ClassSchedulerEditPopup" Width="500" Height="240" StaysOpen="True" Placement="Center" PopupAnimation="Fade" AllowsTransparency="False">
             <Border BorderBrush="DarkGray" BorderThickness="2" Background="White">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Content="Class Scheduler Information:" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
+                    <Label Grid.Row="1" Grid.Column="0" Content="Day :" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Height="25" />
 
-                <Grid Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="40"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="150"/>
-                    <ColumnDefinition Width="100"/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Content="Non Class Date Information:" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
-                <DataGrid Grid.Row="1" Grid.Column="1" Grid.RowSpan="5">
+                    <Label Grid.Row="2" Grid.Column="1" Content="Hour" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <Label Grid.Row="2" Grid.Column="2" Content="Min" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-                </DataGrid>
-                <Button Grid.Row="4" Grid.Column="2" Height="25" Width="80" Margin="0,0,10,0" Content="Delete" 
-                        Click="NonClassDateEditDelete_onClick"
+                    <Label Grid.Row="3" Grid.Column="0" Content="Start :" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <ComboBox Grid.Row="3" Grid.Column="1" Height="25" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <ComboBox Grid.Row="3" Grid.Column="2" Height="25" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+                    <Label Grid.Row="4" Grid.Column="0" Content="End :" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <ComboBox Grid.Row="4" Grid.Column="1" Height="25" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <ComboBox Grid.Row="4" Grid.Column="2" Height="25" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+                    <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Height="25" Width="80" Margin="0,0,10,0" Content="Cancel" 
+                        Click="ClassSchedulerEditCancel_onClick"
                         />
-                <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Height="25" Width="80" Margin="0,0,10,0" Content="Cancel" 
-                        Click="NonClassDateEditCancel_onClick"
+                        <Button Height="25" Width="80" Margin="0,0,0,0" Content="Add" 
+                        Click="ClassSchedulerEditAdd_onClick"
                         />
-                    <Button Height="25" Width="80" Margin="0,0,10,0" Content="Save" 
-                        Click="NonClassDateEditSave_onClick"
-                        />
-                </StackPanel>
-            </Grid>
-                </Border>
+                    </StackPanel>
+                </Grid>
+            </Border>
         </Popup>
-        -->
     </Grid>
 </UserControl>
