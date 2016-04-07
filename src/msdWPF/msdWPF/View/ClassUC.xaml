@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:control="clr-namespace:MultiSelectComboBox;assembly=MultiSelectComboBox"
              xmlns:viewModel="clr-namespace:msdWPF.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1000">
@@ -240,18 +241,28 @@
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Content="Class Scheduler Information:" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
                     <Label Grid.Row="1" Grid.Column="0" Content="Day :" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                    <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Height="25" />
+                    <control:MultiSelectComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Height="25" 
+                                                 ItemsSource="{Binding WeekDayList}"
+                                                 />
 
                     <Label Grid.Row="2" Grid.Column="1" Content="Hour" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     <Label Grid.Row="2" Grid.Column="2" Content="Min" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                     <Label Grid.Row="3" Grid.Column="0" Content="Start :" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                    <ComboBox Grid.Row="3" Grid.Column="1" Height="25" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    <ComboBox Grid.Row="3" Grid.Column="2" Height="25" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <ComboBox Grid.Row="3" Grid.Column="1" Height="25" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                              ItemsSource="{Binding HourList}"
+                              />
+                    <ComboBox Grid.Row="3" Grid.Column="2" Height="25" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                              ItemsSource="{Binding MinuteList}"
+                              />
 
                     <Label Grid.Row="4" Grid.Column="0" Content="End :" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                    <ComboBox Grid.Row="4" Grid.Column="1" Height="25" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    <ComboBox Grid.Row="4" Grid.Column="2" Height="25" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <ComboBox Grid.Row="4" Grid.Column="1" Height="25" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                              ItemsSource="{Binding HourList}"
+                              />
+                    <ComboBox Grid.Row="4" Grid.Column="2" Height="25" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                              ItemsSource="{Binding MinuteList}"
+                              />
 
                     <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Height="25" Width="80" Margin="0,0,10,0" Content="Cancel" 

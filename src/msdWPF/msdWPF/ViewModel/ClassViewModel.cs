@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Windows.Controls;
 using msdWPF.Model;
 
 namespace msdWPF.ViewModel
@@ -42,6 +43,44 @@ namespace msdWPF.ViewModel
             ClassInformationEditButtonLabel = "Eidt";
             CanEditClassIfnormation = false;
 
+            WeekDayList = new Dictionary<string, object>();
+            WeekDayList.Add("Sunday", "SUN");
+            WeekDayList.Add("Monday", "MON");
+            WeekDayList.Add("Tuesday", "TUE");
+            WeekDayList.Add("Wednseday", "WED");
+            WeekDayList.Add("Thursday", "THU");
+            WeekDayList.Add("Friday", "FRI");
+            WeekDayList.Add("Saturday", "SAT");
+
+            HourList = new List<string>();
+            HourList.Add("8:00");
+            HourList.Add("9:00");
+            HourList.Add("10:00");
+            HourList.Add("11:00");
+            HourList.Add("12:00");
+            HourList.Add("13:00");
+            HourList.Add("14:00");
+            HourList.Add("15:00");
+            HourList.Add("16:00");
+            HourList.Add("17:00");
+            HourList.Add("18:00");
+            HourList.Add("19:00");
+            HourList.Add("20:00");
+            HourList.Add("21:00");
+
+            MinuteList = new List<string>();
+            MinuteList.Add("00");
+            MinuteList.Add("05");
+            MinuteList.Add("10");
+            MinuteList.Add("15");
+            MinuteList.Add("20");
+            MinuteList.Add("25");
+            MinuteList.Add("30");
+            MinuteList.Add("35");
+            MinuteList.Add("40");
+            MinuteList.Add("45");
+            MinuteList.Add("50");
+            MinuteList.Add("55");
             NotifyPropertyChanged("");
         }
 
@@ -338,7 +377,13 @@ namespace msdWPF.ViewModel
         }
         #endregion
 
+        #region Edit Class Scheduler
 
+        public Dictionary<String, Object> WeekDayList { get; set; }
+        public List<String> HourList { get; set; }
+        public List<String> MinuteList { get; set; }
+
+        #endregion
 
         internal void CancelEditNonClassDate()
         {

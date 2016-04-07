@@ -37,6 +37,7 @@ namespace msdWPF.Model
                     semester.Id = System.DBNull.Value != reader["id"] ? Convert.ToInt32(reader["id"]) : 0;
                     semester.Name = System.DBNull.Value != reader["name"] ? (String)reader["name"] : null;
                     semester.StartDate = System.DBNull.Value != reader["start_date"] ? (DateTime?)reader["start_date"] : (DateTime?)null;
+                    semester.EndDate = System.DBNull.Value != reader["end_date"] ? (DateTime?)reader["end_date"] : (DateTime?)null;
 
                     semesters.Add(semester);
                 }
@@ -72,6 +73,22 @@ namespace msdWPF.Model
                 Console.Write(ex.Message);
             }
             return types;
-        } 
+        }
+
+        public SchoolSemester FindCurrentSchoolSemester()
+        {
+            DateTime now = DateTime.Now;
+            List<SchoolSemester> allSemesters = FindAllSchoolSemester();
+            foreach (SchoolSemester semester in allSemesters)
+            {
+                if (DateTime.Compare(((DateTime) semester.StartDate), now) > 0 &&
+                    DateTime.Compare(((DateTime) semester.EndDate), now) < 0)
+                {
+                    return semester;
+                }
+            }
+
+            return null;
+        }
     }
 }

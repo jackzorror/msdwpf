@@ -12,6 +12,7 @@ namespace msdWPF.Model
     public class StudentModel
     {
         private MSDModel _MSDModel = new MSDModel();
+        private ClassModel _classModel = new ClassModel();
 
         private MySqlConnection conn
         {
@@ -307,7 +308,6 @@ namespace msdWPF.Model
 
         internal MSDStudent FindStudentById(int id)
         {
-
             String query = "SELECT * FROM student WHERE id = " + id + ";";
             try
             {
@@ -343,5 +343,68 @@ namespace msdWPF.Model
             return _MSDModel.FindAllSchoolSemester();
         }
 
+
+        internal SchoolSemester FindCurrentSchoolSemester()
+        {
+            return _MSDModel.FindCurrentSchoolSemester();
+        }
+
+        internal List<SchoolClassSummary> GetRegisteredClassSummariesByStudentIdAndSemesterId(int studentid, int semesterid)
+        {
+            String query =
+                "SELECT * FROM school_class AS sc JOIN student_registered_class AS src ON sc.id = src.class_id " +
+                " WHERE sc.is_active = 1 AND src.is_active = 1 AND src.student_id = " + studentid +
+                " AND sc.semester_id = " + semesterid;
+            List<SchoolClassSummary> rClassSummaries = null;
+            try
+            {
+                SQLiteCommand command = new SQLiteCommand(query, lconn);
+                SQLiteDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    if (null == rClassSummaries) rClassSummaries = new List<SchoolClassSummary>();
+
+                    SchoolClassSummary sClassSummary = new SchoolClassSummary();
+                    sClassSummary.Id = System.DBNull.Value != reader["id"] ? Convert.ToInt32(reader["id"]) : 0;
+                    sClassSummary.Name = System.DBNull.Value != reader["name"] ? (String) reader["name"] : null;
+                    sClassSummary.SemesterId = System.DBNull.Value != reader["semester_id"]
+                        ? Convert.ToInt32(reader["semester_id"])
+                        : 0;
+                    sClassSummary.ClassTypeId = System.DBNull.Value != reader["class_type_id"]
+                        ? Convert.ToInt32(reader["class_type_id"])
+                        : 0;
+                    rClassSummaries.Add(sClassSummary);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return rClassSummaries;
+        }
+
+        internal List<SchoolClassSummary> GetNonRegisterdClassSummariesByStudentIdAndSemesterId(int studentid, int semesterid)
+        {
+            List<SchoolClassSummary> registeredCalss = GetRegisteredClassSummariesByStudentIdAndSemesterId(studentid, semesterid);
+            List<SchoolClassSummary> currentClassInSemester =
+                _classModel.FindAllSchoolClassSummariesBySemesterId(semesterid);
+            List<SchoolClassSummary> summaries = new List<SchoolClassSummary>();
+
+            foreach (SchoolClassSummary summary in currentClassInSemester)
+            {
+                Boolean found = false;
+                foreach (SchoolClassSummary classSummary in registeredCalss)
+                {
+                    if (classSummary.Id.Equals(summary.Id))
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) summaries.Add(summary);
+            }
+            return summaries;
+        }
     }
 }

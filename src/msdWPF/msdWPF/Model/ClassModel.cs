@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 
 namespace msdWPF.Model
 {
@@ -77,22 +78,56 @@ namespace msdWPF.Model
 
         internal List<SchoolClassSummary> FindAllSchoolClassSummary()
         {
-            List<SchoolClassSummary> classes = new List<SchoolClassSummary>();
-            String query = "select id, name, semester_id, class_type_id " +
-                " from school_class " +
-                " WHERE is_active = 1 " +
-                " order by start_date desc, semester_id desc, name;";
+            List<SchoolClassSummary> summaries = null;
+            List<SchoolClass> classes = FindAllSchoolClass();
+
+            if (null != classes && classes.Count > 0)
+            {
+                summaries = new List<SchoolClassSummary>();
+                foreach (SchoolClass schoolClass in classes)
+                {
+                    SchoolClassSummary summary = new SchoolClassSummary();
+                    summary.Id = schoolClass.Id;
+                    summary.Name = schoolClass.Name;
+                    summary.SemesterId = schoolClass.SemesterId;
+                    summary.ClassTypeId = schoolClass.ClassTypeId;
+
+                    summaries.Add(summary);
+                }
+
+            }
+            return summaries;
+        }
+
+        internal List<SchoolClass> FindAllSchoolClassesBySemesterId(int semesterid)
+        {
+            List<SchoolClass> classes = null;
+            String query = "select sc.*, ss.name as semester_name, at.name as class_type_name " +
+                " from school_class as sc " +
+                " join school_semester as ss on sc.semester_id = ss.id " +
+                " join application_type as at on sc.class_type_id = at.id  " +
+                " WHERE sc.is_active = 1 " +
+                " AND sc.semester_id = " + semesterid +
+                " order by start_date desc, semester_id desc, sc.name;";
             try
             {
                 SQLiteCommand command = new SQLiteCommand(query, conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    SchoolClassSummary sc = new SchoolClassSummary();
+                    if (null == classes) classes = new List<SchoolClass>();
+
+                    SchoolClass sc = new SchoolClass();
                     sc.Id = System.DBNull.Value != reader["id"] ? Convert.ToInt32(reader["id"]) : 0;
                     sc.Name = System.DBNull.Value != reader["name"] ? (String)reader["name"] : null;
+                    sc.StartDate = System.DBNull.Value != reader["start_date"] ? (DateTime?)reader["start_date"] : (DateTime?)null;
+                    sc.EndDate = System.DBNull.Value != reader["end_date"] ? (DateTime?)reader["end_date"] : (DateTime?)null;
+                    sc.Status = System.DBNull.Value != reader["status"] ? (String)reader["status"] : null;
+                    sc.SemesterName = System.DBNull.Value != reader["semester_name"] ? (String)reader["semester_name"] : null;
+                    sc.ClassTypeName = System.DBNull.Value != reader["class_type_name"] ? (String)reader["class_type_name"] : null;
                     sc.ClassTypeId = System.DBNull.Value != reader["class_type_id"] ? Convert.ToInt32(reader["class_type_id"]) : 0;
                     sc.SemesterId = System.DBNull.Value != reader["semester_id"] ? Convert.ToInt32(reader["semester_id"]) : 0;
+                    sc.IsActive = System.DBNull.Value != reader["is_active"] ? Convert.ToInt32(reader["is_active"]) == 1 : false;
 
                     classes.Add(sc);
                 }
@@ -104,6 +139,30 @@ namespace msdWPF.Model
             }
             return classes;
         }
+
+        internal List<SchoolClassSummary> FindAllSchoolClassSummariesBySemesterId(int semesterid)
+        {
+            List<SchoolClassSummary> summaries = null;
+            List<SchoolClass> classes = FindAllSchoolClassesBySemesterId(semesterid);
+            if (null != classes && classes.Count > 0)
+            {
+                summaries = new List<SchoolClassSummary>();
+                foreach (SchoolClass schoolClass in classes)
+                {
+                    if (schoolClass.SemesterId.Equals(semesterid))
+                    {
+                        SchoolClassSummary summary = new SchoolClassSummary();
+                        summary.Id = schoolClass.Id;
+                        summary.Name = schoolClass.Name;
+                        summary.SemesterId = schoolClass.SemesterId;
+                        summary.ClassTypeId = schoolClass.ClassTypeId;
+
+                        summaries.Add(summary);
+                    }
+                }
+            }
+            return summaries;
+        } 
 
         internal SchoolClass FindSchoolClassById(int cid)
         {

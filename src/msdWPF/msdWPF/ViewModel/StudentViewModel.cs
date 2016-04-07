@@ -124,6 +124,10 @@ namespace msdWPF.ViewModel
             _lastNameList = _studentModel.FindAllStudentLastName();
             _firstNameList = _studentModel.FindAllStudentFirstName();
             _semesterList = _studentModel.FindAllSemesterList();
+            _curSemester = _studentModel.FindCurrentSchoolSemester();
+            if (null != _curSemester)
+                CurrentSemester = _curSemester;
+
             NotifyPropertyChanged("");
         }
 
@@ -227,12 +231,15 @@ namespace msdWPF.ViewModel
             }
             else if (StudentInformationEditButtonLabel.Equals("Cancel"))
             {
-                MSDStudent student = _studentModel.FindStudentById(CurrentMSDStudent.Id);
-
-                CurrentMSDStudent = student;
-                
                 if (null != CurrentMSDStudent && 0 != CurrentMSDStudent.Id)
+                {
+                    MSDStudent student = _studentModel.FindStudentById(CurrentMSDStudent.Id);
+
+                    CurrentMSDStudent = student;
+
                     _msdStudentParents = _studentModel.FindStudentParentsByStudentId(CurrentMSDStudent.Id);
+
+                }
 
                 StudentInformationEditButtonLabel = "Edit";
                 CanEditStudentInformation = false;
@@ -385,5 +392,61 @@ namespace msdWPF.ViewModel
 
         #endregion
 
+        #region StudentRegisteredClassUC
+
+        private SchoolSemester _curSemester;
+
+        public SchoolSemester CurrentSemester
+        {
+            get { return _curSemester; }
+            set
+            {
+                _curSemester = value;
+                if (null != _curSemester && null != _curMsdStudent && 0 != _curMsdStudent.Id)
+                {
+                    RegisteredClassSummaries =
+                        _studentModel.GetRegisteredClassSummariesByStudentIdAndSemesterId(_curMsdStudent.Id, _curSemester.Id);
+                    NonRegisteredClassSummaries =
+                        _studentModel.GetNonRegisterdClassSummariesByStudentIdAndSemesterId(_curMsdStudent.Id, _curSemester.Id);
+                }
+
+                NotifyPropertyChanged("");
+            }
+        }
+
+        public SchoolSemester SelectedRegisteredClassSemester
+        {
+            get { return _selectedRegistertedSchoolSemester; }
+            set
+            {
+                _selectedRegistertedSchoolSemester = value;
+                if (null != _selectedRegistertedSchoolSemester && null != _curMsdStudent &&
+                    0 != _selectedRegistertedSchoolSemester.Id && 0 != _curMsdStudent.Id)
+                {
+                    RegisteredClassSummaries =
+                        _studentModel.GetRegisteredClassSummariesByStudentIdAndSemesterId(_curMsdStudent.Id, _selectedRegistertedSchoolSemester.Id);
+                    NonRegisteredClassSummaries =
+                        _studentModel.GetNonRegisterdClassSummariesByStudentIdAndSemesterId(_curMsdStudent.Id, _selectedRegistertedSchoolSemester.Id);
+                }
+                NotifyPropertyChanged("");
+            }
+        }
+        private SchoolSemester _selectedRegistertedSchoolSemester;
+
+        public List<SchoolClassSummary> RegisteredClassSummaries
+        {
+            get { return _registeredClassSummaries; }
+            set { _registeredClassSummaries = value; }
+        }
+        private List<SchoolClassSummary> _registeredClassSummaries;
+
+        public List<SchoolClassSummary> NonRegisteredClassSummaries
+        {
+            get { return _nonRegisteredClassSummaries; }
+            set { _nonRegisteredClassSummaries = value; }
+        } 
+        private List<SchoolClassSummary> _nonRegisteredClassSummaries;
+
+        #endregion
     }
 }
